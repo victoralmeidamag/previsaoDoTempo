@@ -2,7 +2,7 @@
   <div id="app">
     <div class="main">
       <div class="search-box">
-        <input class="search-bar" type="text" placeholder="Pesquisar..." v-model="data.city">
+        <input class="search-bar" type="text" placeholder="Pesquisar..." v-model="data.city" @input="handleInput" @keyup.enter = "enviar">
         <div>
           <div class="header">
               <h1>{{ data.city.toUpperCase()}}</h1>
@@ -44,6 +44,9 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
+    handleInput(event){
+      console.log(event.target.value);
+    },
     async enviar(){
       try {
         const response = await axios.post('http://127.0.0.1:5000/search',{
