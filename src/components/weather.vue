@@ -9,10 +9,10 @@
               <h3>{{ hora }}</h3>
           </div>
           <div class="temp">
-            <h2>39&deg;C</h2>
+            <h2>{{temperatura}}&deg;C</h2>
           </div>
           <div class="estado">
-            <h3>Nuvens</h3>
+            <h3>{{descricao}}</h3>
           </div>
         </div>
       </div>
@@ -33,6 +33,8 @@ export default {
         city: '',
       },
       hora: new Date().toLocaleString(),
+      temperatura: '',
+      descricao: '',
     };
   },
   mounted() {
@@ -44,19 +46,24 @@ export default {
     clearInterval(this.timer);
   },
   methods: {
-    handleInput(event){
-      console.log(event.target.value);
+    handleInput(){
+
     },
     async enviar(){
       try {
-        const response = await axios.post('http://127.0.0.1:5000/search',{
+        const response = await axios.post('http://10.10.10.39:5000/search',{
         city: this.data.city,
         },{
           headers: {
             'Content-Type': 'application/json',
           },
         });
-        console.log(response.data);
+        if (response.data.error) {
+          console.error("Erro ao pesquisar:", response.data.error)
+        } else {
+        this.temperatura = response.data.temperatura
+        this.descricao = (response.data.descricao).toUpperCase()
+        }
       } catch (error) {
         console.error('Erro ao pesquisar:', error);
       }
@@ -76,8 +83,11 @@ export default {
 #app {
 background-image: url(../assets/img4.jpg);
 background-size: cover;
-background-position: bottom;
-transition: 0.4s;
+background-position: center;
+background-repeat: no-repeat;
+height: 100vh;
+margin: 0;
+overflow: hidden;
 }
 
 .main{

@@ -1,5 +1,5 @@
 <template>
- <WeatherComponent> </WeatherComponent>/>
+ <WeatherComponent> </WeatherComponent>
 </template>
 
 <script>
@@ -14,5 +14,7 @@ export default {
 </script>
 
 <style>
-
+html, body{
+  margin: 0;
+}
 </style>
