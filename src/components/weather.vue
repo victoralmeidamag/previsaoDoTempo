@@ -2,7 +2,10 @@
   <div id="app" class="app weather-app">
     <div class="main">
       <div class="search-box">
-        <input class="search-bar" type="text" placeholder="Pesquisar..." v-model="data.city" @input="handleInput" @keyup.enter="enviar">
+        <h2>Pesquisa por nome da cidade</h2>
+        <input class="search-bar" type="text" placeholder="Pesquisar por CIDADE" v-model="data.city" @input="handleInput" @keyup.enter="enviar">
+        <h2>Pesquisa por CEP</h2>
+        <input class="search-bar" type="text" placeholder="Pesquisar por CEP">
         <div>
           <div class="header">
             <h1>{{ data.city.charAt(0).toLocaleUpperCase() + data.city.slice(1) }}</h1>
@@ -52,7 +55,7 @@ export default {
     },
     async enviar() {
       try {
-        const response = await axios.post('http://10.10.10.39:5000/search', {
+        const response = await axios.post('http://127.0.0.1:5000/search', {
           city: this.data.city,
         }, {
           headers: {
@@ -104,6 +107,10 @@ export default {
   position: relative;
 }
 
+.search-box h2{
+  color: white;
+}
+
 .search-box .search-bar {
   display: block;
   width: 20%;
@@ -115,7 +122,7 @@ export default {
   border: none;
   outline: none;
   background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 0px 16px 0px 16px;
+  border-radius: 20px;
   transition: 0.4s;
 }
 
