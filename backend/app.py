@@ -24,7 +24,7 @@ def search():
 @app.route('/search/cep', methods=['GET'])
 def searchCep():
     try:
-        cep = request.args.get('cep', '')  # Recebe o parâmetro 'cep' da URL da solicitação GET
+        cep = request.args.get('cep', '')
         link = f"http://viacep.com.br/ws/{cep}/json/"
         retorno = requests.get(link)
         requisicao = retorno.json()

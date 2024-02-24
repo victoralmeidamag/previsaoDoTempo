@@ -64,7 +64,6 @@ export default {
           },
         });
         if (response.data.error) {
-          alert('Cidade não existe')
           this.temperatura = '';
           this.descricao = '';
         } else {
@@ -73,7 +72,6 @@ export default {
           this.data.cep = ''
         }
       } catch (error) {
-        alert('Cidade não existe')
         this.temperatura = '';
         this.descricao = '';
       }
