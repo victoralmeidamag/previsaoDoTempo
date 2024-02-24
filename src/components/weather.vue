@@ -3,15 +3,15 @@
     <div class="main">
       <div class="search-box">
         <h2>Pesquisa por nome da cidade</h2>
-        <input class="search-bar" type="text" placeholder="Pesquisar por CIDADE" v-model="data.city" @input="handleInput" @keyup.enter="enviar">
+        <input class="search-bar" type="text" placeholder="Digite o nome da cidade" v-model="data.city" @input="handleInput" @keyup.enter="enviar">
         <h2>Pesquisa por CEP</h2>
-        <input class="search-bar" type="text" placeholder="Pesquisar por CEP">
+        <input class="search-bar" type="text" placeholder="Digite o CEP" v-model="data.cep" @input="handleInput" @keyup.enter="enviarCep">
         <div>
           <div class="header">
             <h1>{{ data.city.charAt(0).toLocaleUpperCase() + data.city.slice(1) }}</h1>
             <h3>{{ hora }}</h3>
           </div>
-          <div class="temp">
+          <div class="temp" v-if="temperatura !== ''">
             <h2>{{ temperatura }}&deg;C</h2>
           </div>
           <div class="estado">
@@ -34,6 +34,7 @@ export default {
     return {
       data: {
         city: '',
+        cep: '',
       },
       hora: new Date().toLocaleString(),
       temperatura: '',
@@ -63,15 +64,37 @@ export default {
           },
         });
         if (response.data.error) {
-          console.error("Erro ao pesquisar:", response.data.error)
+          alert('Cidade não existe')
+          this.temperatura = '';
+          this.descricao = '';
         } else {
           this.temperatura = response.data.temperatura
           this.descricao = (response.data.descricao).charAt(0).toLocaleUpperCase() + response.data.descricao.slice(1);
+          this.data.cep = ''
         }
       } catch (error) {
-        console.error('Erro ao pesquisar:', error);
+        alert('Cidade não existe')
+        this.temperatura = '';
+        this.descricao = '';
       }
-    }
+    },
+
+    async enviarCep() {
+  try {
+    const response = await axios.get(`http://127.0.0.1:5000/search/cep?cep=${this.data.cep}`);
+    if (response.data.result === 'erro') {
+      alert('CEP não encontrado');
+    } else {
+      this.data.city = response.data.cidade; // Atualiza o valor da cidade com base no CEP
+      this.enviar()
+  }
+  } catch (error) {
+    console.error('Erro ao pesquisar o CEP:', error);
+    alert('Erro ao pesquisar o CEP');
+  }
+}
+
+
   }
 };
 </script>

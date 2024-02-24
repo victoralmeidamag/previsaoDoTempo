@@ -20,6 +20,19 @@ def search():
     except Exception as e:
         print(f"erro {str(e)}")
         return jsonify({'result' : 'error'})
+    
+@app.route('/search/cep', methods=['GET'])
+def searchCep():
+    try:
+        cep = request.args.get('cep', '')  # Recebe o parâmetro 'cep' da URL da solicitação GET
+        link = f"http://viacep.com.br/ws/{cep}/json/"
+        retorno = requests.get(link)
+        requisicao = retorno.json()
+        cidade = requisicao['localidade']
+        return jsonify({'cidade' : cidade})
+    except Exception as e:
+        print(f"Erro: {str(e)}")
+        return jsonify({'result' : 'erro'})
 
 if __name__ == '__main__':
     app.run(debug=True, host= "0.0.0.0" )
